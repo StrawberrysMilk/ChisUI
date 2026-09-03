@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "types": [
+      "node"
+    ],
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "removeComments": true, // 是否删除注释
+    "outDir": "./dist",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": "./", //是否配置baseUrl
+    "paths": { //是否配置paths
+      "@/*": [
+        "src/*"
+      ],
+      "@router/*": [
+        "src/router/*"
+      ] // 同步别名配置
+    }
+  },
+  "include": [
+    "src",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/utils/request.ts",
+    "src/types/request.d.ts",
+    "src/types/ant-design-icons-vue.d.ts",
+    "src/types/vue-shims.d.ts",
+    "src/utils/AESHelper.js",
+    "src/components/Identify/identify.d.ts"
+  ]
+}

@@ -1,0 +1,6 @@
+// .eslintrc
+{
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "error"
+  }
+}
