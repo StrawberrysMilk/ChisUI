@@ -1,8 +1,6 @@
 import { computed, shallowRef, watch } from 'vue'
 import type { Router } from 'vue-router'
 import type { WorkspaceTab } from '@/components/app-shell/types'
-import { WORKSPACE_TABS } from '@/store/mutation-types'
-import { readStorage, writeStorage } from '@/utils/storage'
 
 interface UseWorkspaceTabsOptions {
   router: Router
@@ -16,16 +14,8 @@ const homeTab: WorkspaceTab = {
   closable: false,
 }
 
-function restoreTabs(): WorkspaceTab[] {
-  const cached = readStorage<WorkspaceTab[]>(WORKSPACE_TABS, [], 'session')
-  const restored = Array.isArray(cached)
-    ? cached.filter((tab) => tab && typeof tab.path === 'string' && tab.path !== '/home')
-    : []
-  return [homeTab, ...restored.map((tab) => ({ ...tab, closable: true }))]
-}
-
 export function useWorkspaceTabs(options: UseWorkspaceTabsOptions) {
-  const tabs = shallowRef<WorkspaceTab[]>(restoreTabs())
+  const tabs = shallowRef<WorkspaceTab[]>([homeTab])
   const refreshKey = shallowRef(0)
   const activePath = computed(() => options.router.currentRoute.value.path)
   const cachedRouteNames = computed(() =>
@@ -88,8 +78,6 @@ export function useWorkspaceTabs(options: UseWorkspaceTabsOptions) {
   }
 
   watch(() => options.router.currentRoute.value.path, addRoute, { immediate: true })
-
-  watch(tabs, (value) => writeStorage(WORKSPACE_TABS, value, 'session'))
 
   return {
     tabs,

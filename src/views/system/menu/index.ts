@@ -15,4 +15,5 @@ export interface MenuItem {
   type?: number | string
   hidden?: boolean
   level?: number
+  children?: MenuItem[]
 }

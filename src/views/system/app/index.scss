@@ -1,0 +1,178 @@
+.system-page {
+  /* The workspace owns the single outer gutter; the page surface fills it. */
+  background: transparent;
+}
+
+.query-fields {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  align-items: center;
+  gap: 12px 10px;
+}
+
+.query-label {
+  grid-column: span 2;
+  justify-self: end;
+  color: hsl(var(--muted-foreground));
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.query-input {
+  grid-column: span 6;
+  width: 100%;
+}
+
+.query-fields > button {
+  grid-column: span 3;
+  justify-self: start;
+  gap: 8px;
+  color: #fff;
+  background: #1890ff;
+  border-color: #1890ff;
+}
+
+.query-fields > button:hover {
+  color: #fff;
+  background: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.primary-action {
+  gap: 8px;
+  color: #fff !important;
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+}
+
+.primary-action:hover {
+  color: #fff !important;
+  background: #40a9ff !important;
+  border-color: #40a9ff !important;
+}
+
+@media (min-width: 1600px) {
+  .query-input {
+    grid-column: span 4;
+  }
+}
+@media (max-width: 1200px) {
+  .query-input {
+    grid-column: span 8;
+  }
+  .query-fields > button {
+    grid-column: span 4;
+  }
+}
+@media (max-width: 640px) {
+  .query-fields {
+    grid-template-columns: 1fr;
+  }
+  .query-label,
+  .query-input,
+  .query-fields > button {
+    grid-column: 1;
+  }
+}
+
+.app-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  background: #00badf;
+}
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.action-buttons [data-variant='link'] {
+  min-width: 0;
+  height: auto;
+  padding: 0 4px;
+  color: #1677ff;
+  text-decoration: none;
+}
+.action-buttons .text-destructive {
+  color: #ff4d4f;
+}
+
+.FlexOperation__actions button {
+  gap: 8px;
+  color: #fff;
+  background: #1890ff;
+  border-color: #1890ff;
+}
+.FlexOperation__actions button:hover {
+  color: #fff;
+  background: #40a9ff;
+  border-color: #40a9ff;
+}
+.FlexOperation__actions .add-app-action {
+  color: #1890ff !important;
+  background: #fff !important;
+  border-color: #1890ff !important;
+}
+.FlexOperation__actions .add-app-action:hover {
+  color: #40a9ff !important;
+  background: #f0f8ff !important;
+  border-color: #40a9ff !important;
+}
+
+.link-button {
+  padding: 0;
+  color: #1677ff;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.confirm-popover {
+  width: 190px;
+  padding: 12px;
+}
+.confirm-popover p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: var(--foreground);
+  font-size: 14px;
+}
+.confirm-popover__icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  color: #faad14;
+}
+.confirm-popover__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.confirm-popover__cancel {
+  color: #374151;
+}
+.confirm-popover__confirm {
+  color: #fff !important;
+  background: #1890ff !important;
+  border-color: #1890ff !important;
+}
+.confirm-popover__confirm:hover {
+  color: #fff !important;
+  background: #40a9ff !important;
+  border-color: #40a9ff !important;
+}
+
+.app-editor-dialog {
+  max-width: 520px;
+}
+.app-editor-form {
+  display: grid;
+  gap: 14px;
+}
+.app-editor-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--foreground);
+  font-size: 14px;
+}

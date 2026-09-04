@@ -22,9 +22,10 @@ const emit = defineEmits<{
   rowClick: [row: TData, event: MouseEvent]
 }>()
 
-const rowConfig = computed(() =>
-  typeof props.rowKey === 'string' ? { keyField: props.rowKey } : undefined,
-)
+const rowConfig = computed(() => ({
+  height: 38,
+  ...(typeof props.rowKey === 'string' ? { keyField: props.rowKey } : {}),
+}))
 const currentRowKey = shallowRef<string | number | undefined>(undefined)
 
 function getRowKey(row: TData, index: number) {
@@ -122,11 +123,31 @@ function getRowClassName({ row, rowIndex }: { row: TData; rowIndex: number }) {
   height: 100%;
 }
 
-.page-table__loading { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: hsl(var(--muted-foreground)); background: rgb(255 255 255 / 72%); }
-.page-table__spinner { width: 28px; height: 28px; color: hsl(var(--primary)); }
+.page-table__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted-foreground);
+  background: rgb(255 255 255 / 72%);
+}
+.page-table__spinner {
+  width: 28px;
+  height: 28px;
+  color: var(--primary);
+}
 
 .page-table :deep(.vxe-body--row) {
   cursor: pointer;
+}
+
+.page-table :deep(.vxe-body--row .vxe-body--column) {
+  height: 38px;
+  border-bottom: 1px solid var(--border) !important;
 }
 
 .page-table :deep(.vxe-body--row.page-table__row--current .vxe-body--column) {
