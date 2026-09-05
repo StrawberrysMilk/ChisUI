@@ -1,19 +1,7 @@
-import {
-  Cascader,
-  Checkbox,
-  CheckboxGroup,
-  DatePicker,
-  Input,
-  InputNumber,
-  Radio,
-  RadioGroup,
-  Slider,
-  Switch,
-  Textarea,
-  TimePicker,
-  TreeSelect,
-  Select,
-} from 'ant-design-vue';
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Select } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { type Component, defineComponent, h } from 'vue';
 import isString from 'lodash-es/isString'
 // 获取type对应的组件
@@ -26,7 +14,7 @@ export const getFormItemComponent = (type?: string | Component): Component => {
 };
 
 /**
- * 由于 ant-design-vue 组件许多都是 v-model:value 绑定的，为了统一处理，使用这个函数将组件转换为支持 v-model 的组件。
+ * 将组件统一转换为支持 v-model 的组件。
  * 将传入的组件转换为支持 v-model 双向绑定的组件。
  * @param component 要转换为支持 v-model 的 Vue 组件
  * @param key 绑定属性的名称，默认为 'value'
@@ -59,21 +47,9 @@ export function transformModelValue(
 const formItemMap = new Map<string, Component>([
   ['input', transformModelValue(Input)],
   ['textarea', transformModelValue(Textarea)],
-  ['number', transformModelValue(InputNumber)],
-  ['time', transformModelValue(TimePicker)],
-  [
-    'date',
-    transformModelValue((props, { slots, attrs }) =>
-      h(DatePicker, { valueFormat: 'YYYY-MM-DD', ...attrs, ...props }, slots)
-    ),
-  ],
-  ['cascader', Cascader],
-  ['slider', Slider],
-  ['checkbox', transformModelValue(Checkbox, 'checked')],
-  ['checkboxGroup', CheckboxGroup],
-  ['radio', Radio],
-  ['radioGroup', transformModelValue(RadioGroup)],
+  ['number', transformModelValue(Input)],
+  ['time', transformModelValue(Input)],
+  ['date', transformModelValue(Input)],
   ['switch', Switch],
-  ['treeSelect', TreeSelect],
   ['select', transformModelValue(Select)],
 ]);

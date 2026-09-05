@@ -6,7 +6,7 @@
     <p>查询参数: {{ route.query }}</p>
     <p>参数: {{ route.params }}</p>
     <!-- <page /> -->
-    <a-button @click="btnClick">打开弹窗</a-button>
+    <Button @click="btnClick">打开弹窗</Button>
   </div>
 </template>
 
@@ -15,6 +15,7 @@ import { useRoute } from 'vue-router';
 // import page from './page.vue';
 import { h, ref, onMounted, onActivated, onDeactivated } from 'vue';
 import { renderDialog } from './dagl';
+import { Button } from '@/components/ui/button';
 
 defineOptions({
   name: 'dagl_dalb'

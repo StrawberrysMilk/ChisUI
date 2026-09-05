@@ -1,10 +1,9 @@
 # Project Agent Rules
 
-## PageComponent
+## Rules
 
-When creating or modifying a page that imports or renders `PageComponent`, you MUST read and follow:
+Each rule is maintained in its own file under `rules/`. Before working on a relevant task, you MUST read and follow the applicable rule file:
 
-- `src/components/PageComponent/PageComponent.rules.md`
-
-These rules apply to the shared component itself and to every view that uses it. Do not duplicate layout responsibilities in a page-level wrapper.
-
+- [`rules/page-component.md`](rules/page-component.md)
+- [`rules/business-page-file-structure.md`](rules/business-page-file-structure.md)
+- [`rules/shared-business-component.md`](rules/shared-business-component.md)

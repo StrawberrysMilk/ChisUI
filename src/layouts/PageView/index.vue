@@ -111,11 +111,11 @@ export default defineComponent({
         if (search.value) {
           children.push(
             h('div', { class: 'page-menu-search' }, [
-              h('a-input-search', {
+              h('input', {
+                class: 'page-menu-search-input',
                 style: 'width: 80%; max-width: 522px;',
                 placeholder: '请输入...',
-                size: 'large',
-                enterButton: '搜索'
+                type: 'search'
               })
             ])
           )
@@ -124,12 +124,8 @@ export default defineComponent({
         if (tabs.value?.items) {
           children.push(
             h('div', { class: 'page-menu-tabs' }, [
-              h('a-tabs', {
-                tabBarStyle: { margin: 0 },
-                activeKey: tabs.value.active?.(),
-                onChange: tabs.value.callback
-              }, tabs.value.items.map((item: any) =>
-                h('a-tab-pane', { tab: item.title, key: item.key })
+              h('div', { class: 'page-menu-tabs' }, tabs.value.items.map((item: any) =>
+                h('button', { type: 'button', key: item.key, onClick: () => tabs.value.callback?.(item.key) }, item.title)
               ))
             ])
           )

@@ -93,19 +93,19 @@ async function handleOpenChange(value: boolean) {
             </article>
           </div>
           <div v-else class="notice-panel__empty">
-            <Icon icon="ant-design:inbox-outlined" />
+            <Icon icon="lucide:inbox" />
             <span>暂无消息</span>
           </div>
         </TabsContent>
 
         <TabsContent value="notice" class="notice-panel__content">
           <div class="notice-panel__empty">
-            <Icon icon="ant-design:inbox-outlined" /><span>暂无通知</span>
+            <Icon icon="lucide:inbox" /><span>暂无通知</span>
           </div>
         </TabsContent>
         <TabsContent value="todo" class="notice-panel__content">
           <div class="notice-panel__empty">
-            <Icon icon="ant-design:inbox-outlined" /><span>暂无待办</span>
+            <Icon icon="lucide:inbox" /><span>暂无待办</span>
           </div>
         </TabsContent>
       </Tabs>

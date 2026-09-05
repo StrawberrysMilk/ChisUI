@@ -5,17 +5,17 @@
       v-model="formData"
       ref="form"
     />
-    <a-button @click="submit">提交</a-button>
+    <Button @click="submit">提交</Button>
 </template>
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue';
-import type { FormInstance } from 'ant-design-vue';
+import { Button } from '@/components/ui/button';
 
 defineOptions({
   name: 'DAGLPage'
 });
 
-const formInstance = useTemplateRef<FormInstance>('form')
+const formInstance = useTemplateRef<{ validate?: () => Promise<unknown> }>('form')
 const formData = ref({})
 const formItems = [
   {
@@ -38,9 +38,7 @@ const rules = {
   birthDate: [{ required: true, message: '请选择出生日期' }],
 }
 async function submit() {
-  if (formInstance.value) {
-    await formInstance.value.validate()
-  }
+  await formInstance.value?.validate?.()
   console.log('formData.value ==> ', formData.value)
 }
 </script>

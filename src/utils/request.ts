@@ -1,7 +1,7 @@
 import axios from 'axios'
 import type { App } from 'vue'
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
-import { message, notification } from 'ant-design-vue'
+import { toast } from 'vue-sonner'
 import { VueAxios as AxiosPlugin } from './axios'
 import AESHelper from './AESHelper'
 import { ACCESS_JTI, ACCESS_TOKEN, LOGIN_INFO } from '@/store/mutation-types'
@@ -31,19 +31,16 @@ const err = async (error: any) => {
         : null
     if (requirement) {
       requestPasswordChange(requirement)
-      notification.warning({ message: '需要修改密码', description: errorMessage })
+      toast.warning('需要修改密码', { description: errorMessage })
     } else {
-      notification.error({ message: '无权访问', description: errorMessage })
+      toast.error('无权访问', { description: errorMessage })
     }
   } else if (status === 429) {
-    notification.warning({ message: '系统访问高峰期', description: '请稍后再试' })
+    toast.warning('系统访问高峰期', { description: '请稍后再试' })
   } else if (status === 404) {
-    notification.error({
-      message: '接口不存在 (404)',
-      description: `请求地址：${error.config?.url || ''}`,
-    })
+    toast.error('接口不存在 (404)', { description: `请求地址：${error.config?.url || ''}` })
   } else if (status >= 500) {
-    message.error(errorMessage)
+    toast.error(errorMessage)
   } else if (status === 401 && !(data?.result?.isLogin) && token) {
     const config = error.config as InternalAxiosRequestConfig & { _retry?: boolean }
     const isAuthenticationRequest = /\/Login\/(GetLoginUserInfo|GetGHUserInfo|Logout)/i.test(config?.url || '')

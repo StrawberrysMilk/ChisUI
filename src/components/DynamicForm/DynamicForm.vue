@@ -23,6 +23,11 @@ function resolve<T>(source: DynamicFormValue<T> | undefined, fallback: T): T {
 function isHidden(item: DynamicFormField) { return resolve(item.hidden, false) }
 function isDisabled(item: DynamicFormField) { return props.readonly || resolve(item.disabled, false) }
 function isRequired(item: DynamicFormField) { return resolve(item.required, false) }
+function fieldStyle(item: DynamicFormField) {
+  const labelSpan = Number((item.labelCol as any)?.span ?? 6)
+  const wrapperSpan = Number((item.wrapperCol as any)?.span ?? Math.max(24 - labelSpan, 1))
+  return { '--dynamic-label-width': `${(labelSpan / (labelSpan + wrapperSpan)) * 100}%` }
+}
 function options(item: DynamicFormField) { return resolve(item.options, []) }
 function inputType(item: DynamicFormField) { return item.type === 'number' ? 'number' : 'text' }
 function update(field: string, value: unknown) {
@@ -36,7 +41,7 @@ async function validate() {
     if (isHidden(item) || item.type === 'separator') continue
     const value = model.value[item.field]
     if (isRequired(item) && (value === undefined || value === null || String(value).trim() === '')) {
-      nextErrors[item.field] = `请${item.type === 'select' || item.type === 'radioGroup' ? '选择' : '填写'}${item.label ?? '该字段'}`
+      nextErrors[item.field] = item.requiredMessage ?? `请${item.type === 'select' || item.type === 'radioGroup' ? '选择' : '填写'}${item.label ?? '该字段'}`
       continue
     }
     const message = await item.validate?.(value, context.value)
@@ -56,12 +61,13 @@ defineExpose({ validate, resetValidation })
       <Separator v-if="item.type === 'separator' && !isHidden(item)" class="md:col-span-2" />
       <Field
         v-else-if="!isHidden(item)"
-        orientation="vertical"
+        orientation="horizontal"
+        :style="fieldStyle(item)"
         :class="item.colSpan === 2 ? 'md:col-span-2' : undefined"
         :data-invalid="Boolean(errors[item.field]) || undefined"
         :data-disabled="isDisabled(item) || undefined"
       >
-        <FieldLabel v-if="item.label" :for="item.field">
+        <FieldLabel v-if="item.label" :for="item.field" class="dynamic-field-label shrink-0 pt-2">
           {{ item.label }}<span v-if="isRequired(item)" class="text-destructive"> *</span>
         </FieldLabel>
 
@@ -141,6 +147,16 @@ defineExpose({ validate, resetValidation })
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
+}
+.dynamic-form-grid [data-slot="field"] > :not([data-slot="field-label"]):not([data-slot="field-error"]) {
+  min-width: 0;
+  flex: 1;
+}
+.dynamic-field-label {
+  flex: 0 0 var(--dynamic-label-width);
+  justify-content: flex-end;
+  text-align: right;
+  padding-right: 0.75rem;
 }
 @media (min-width: 768px) {
   .dynamic-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

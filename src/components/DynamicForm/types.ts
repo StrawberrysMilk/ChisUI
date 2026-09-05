@@ -32,6 +32,14 @@ export interface DynamicFormField {
   colSpan?: 1 | 2
   componentProps?: Record<string, unknown>
   validate?: DynamicFormValidator
+  requiredMessage?: string
+  /** 原配置中未被动态表单直接消费的布局/扩展属性 */
+  span?: number
+  labelCol?: Record<string, unknown>
+  wrapperCol?: Record<string, unknown>
+  hasFeedback?: boolean
+  meta?: Record<string, unknown>
+  [key: string]: unknown
 }
 
 export type DynamicFormErrors = Record<string, string | undefined>

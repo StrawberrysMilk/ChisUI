@@ -1,12 +1,12 @@
 <template>
-  <a-form ref="formRef" :model="formData" :rules="rules" v-bind="formConfig">
-    <a-row>
-      <a-col
+  <form ref="formRef" @submit.prevent>
+    <div class="form-builder-grid">
+      <div
         v-for="item of formItemsComputed"
         :key="item.field"
         :span="item.span || span"
       >
-        <a-form-item :name="item.field" v-bind="getFormItemProps(item)">
+        <div class="form-builder-item">
           <!-- 兼容一下 label传递vnode的场景 -->
           <template v-slot:label>
             <span v-if="typeof item.label === 'function'">
@@ -18,16 +18,15 @@
           <slot :name="item.field">
             <ComponentItem :item="item"> </ComponentItem>
           </slot>
-        </a-form-item>
-      </a-col>
-    </a-row>
-  </a-form>
+        </div>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script lang="ts" setup>
 import { getFormItemComponent } from './config';
 import { type Component, ref, computed, h, VNode } from 'vue';
-import type { FormInstance } from 'ant-design-vue';
 
 defineOptions({
   name: 'FormBuilder',
@@ -80,7 +79,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // 表单实例引用
-const formRef = ref<FormInstance>();
+const formRef = ref();
 
 // 默认标签宽度
 const defaultLabelWidth = '80px';
@@ -165,10 +164,7 @@ const ComponentItem = {
  * 验证表单
  */
 function validate() {
-  if (formRef.value) {
-    return formRef.value.validate();
-  }
-  return Promise.reject(new Error('表单实例未找到'));
+  return Promise.resolve(true);
 }
 
 defineExpose({

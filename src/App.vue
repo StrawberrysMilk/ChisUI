@@ -3,17 +3,14 @@
 </template> -->
 
 <template>
-  <a-config-provider :theme="themeConfig">
-    <RouterView />
-    <AuthDialogs />
-    <Toaster position="top-right" rich-colors />
-  </a-config-provider>
+  <RouterView />
+  <AuthDialogs />
+  <Toaster position="top-right" rich-colors />
 </template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { Toaster } from 'vue-sonner';
-import { themeConfig } from '@/config/theme';
 import AuthDialogs from '@/components/auth/AuthDialogs.vue';
 </script>
 <style>

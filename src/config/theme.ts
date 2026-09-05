@@ -1,6 +1,4 @@
-import type { ThemeConfig } from 'ant-design-vue/es/config-provider/context';
-
-export const themeConfig: ThemeConfig = {
+export const themeConfig = {
   token: {
     // 主色调
     colorPrimary: '#00badf',

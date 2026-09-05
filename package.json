@@ -19,13 +19,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "^7.0.1",
     "@iconify/vue": "^5.0.1",
     "@lucide/vue": "^1.39.0",
     "@vee-validate/zod": "^4.15.1",
     "@vueuse/core": "^13.2.0",
     "@vxe-ui/core": "^4.4.21",
-    "ant-design-vue": "^4.2.6",
     "axios": "^1.9.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

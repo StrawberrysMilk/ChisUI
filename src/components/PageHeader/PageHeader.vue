@@ -11,7 +11,7 @@
           </div>
           <div class="row">
             <div v-if="avatar" class="avatar">
-              <a-avatar :src="avatar" />
+              <img :src="avatar" alt="" class="page-header-avatar" />
             </div>
             <div v-if="this.$slots.content" class="headerContent">
               <slot name="content"></slot>
@@ -146,6 +146,8 @@ export default {
     }
   }
 }
+
+.page-header-avatar { width: 72px; height: 72px; border-radius: 9999px; object-fit: cover; display: block; }
 
 .mobile .page-header {
   .main {
