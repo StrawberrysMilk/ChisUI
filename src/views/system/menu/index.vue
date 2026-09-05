@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, shallowRef } from 'vue'
+import { computed, onMounted, reactive, ref, shallowRef } from 'vue'
 import { Icon } from '@iconify/vue'
-import PageComponent from '@/components/PageComponent/PageComponent.vue'
+import { TablePro } from '@/components'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
@@ -31,7 +24,8 @@ import {
 import { getAppList } from '@/api/modular/system/appManage'
 import { sysDictTypeDropDown } from '@/api/modular/system/dictManage'
 import { hasPerm } from '@/utils/CommonMethod'
-import type { MenuItem } from './index'
+import MenuFormDialog from './components/MenuFormDialog/index.vue'
+import type { MenuItem } from './type'
 
 defineOptions({ name: 'SystemMenuManagement' })
 const query = reactive({ searchType: '1', searchText: '', application: '' })
@@ -41,27 +35,15 @@ const expandedIds = shallowRef<Set<string | number>>(new Set())
 const apps = shallowRef<any[]>([])
 const typeDict = shallowRef<any[]>([])
 const loading = shallowRef(false)
+let menuRequestVersion = 0
+const tablePro = ref<InstanceType<typeof TablePro> | null>(null)
 const pagination = reactive({
   current: 1,
   pageSize: 20,
   total: 0,
   pageSizeOptions: [20, 30, 50, 100],
 })
-const editorOpen = shallowRef(false)
-const editorMode = shallowRef<'add' | 'edit'>('add')
-const editorLoading = shallowRef(false)
-const form = reactive<any>({
-  id: '',
-  pid: 0,
-  application: '',
-  name: '',
-  title: '',
-  router: '',
-  component: '',
-  iconBase: '',
-  sort: 100,
-  type: 1,
-})
+const menuDialog = ref<InstanceType<typeof MenuFormDialog> | null>(null)
 const columns = [
   { field: 'name', title: '菜单名称', minWidth: 200 },
   { field: 'type', title: '菜单类型', width: 100, align: 'center' },
@@ -89,12 +71,17 @@ function normalizeTree(items: any[], level = 0): MenuItem[] {
   }))
 }
 function buildTree(items: any[]) {
-  if (items.some((item) => Array.isArray(item.children))) return normalizeTree(items)
+  // Flat menu responses often include `children: []` on every row. Treat only
+  // non-empty children arrays as an already nested response; otherwise build
+  // the hierarchy from parent ids so expand controls remain available.
+  if (items.some((item) => Array.isArray(item.children) && item.children.length > 0))
+    return normalizeTree(items)
   const nodes = items.map((item) => ({ ...item, children: [] as MenuItem[] }))
   const map = new Map(nodes.map((item) => [String(item.id), item]))
   const roots: MenuItem[] = []
   nodes.forEach((item) => {
-    const parent = map.get(String(item.pid ?? 0))
+    const parentId = item.pid ?? item.parentId ?? item.parent_id ?? 0
+    const parent = map.get(String(parentId))
     if (parent && parent !== item) parent.children!.push(item)
     else roots.push(item)
   })
@@ -124,11 +111,14 @@ function toggleExpanded(row: MenuItem | Record<string, unknown>) {
   else next.add(item.id)
   expandedIds.value = next
   rows.value = flattenVisible(treeRows.value)
+  tablePro.value?.setRows(tableRows.value)
 }
-async function loadData() {
+async function loadData(params: Record<string, unknown> = {}) {
+  const version = ++menuRequestVersion
   loading.value = true
   try {
-    const response: any = await cancelableRequest(getMenuList, { ...query })
+    const response: any = await cancelableRequest(getMenuList, { ...params, ...query })
+    if (version !== menuRequestVersion) return
     const p = payload(response)
     const page = p?.rows ? p : p?.data?.rows ? p.data : p?.data
     const sourceRows = Array.isArray(page)
@@ -150,22 +140,23 @@ async function loadData() {
       ? page.length
       : (page.totalRows ?? page.total ?? page.totalCount ?? sourceRows.length)
   } catch (error: any) {
+    if (version !== menuRequestVersion || error?.name === 'AbortError') return
     treeRows.value = []
     expandedIds.value = new Set()
     rows.value = []
     pagination.total = 0
-    if (error?.name !== 'AbortError') toast.error(error?.message || '菜单列表加载失败')
+    toast.error(error?.message || '菜单列表加载失败')
   } finally {
-    loading.value = false
+    if (version === menuRequestVersion) loading.value = false
   }
 }
-function changePage(next: any) {
-  Object.assign(pagination, next)
-  loadData()
+async function getMenuTableData(params: Record<string, unknown>) {
+  await loadData(params)
+  return { rows: tableRows.value, totalRows: pagination.total }
 }
 function search() {
   pagination.current = 1
-  loadData()
+  void tablePro.value?.search()
 }
 function selectApplication(application: unknown) {
   query.application = application == null ? '' : String(application)
@@ -175,41 +166,24 @@ function typeName(value: unknown) {
   return typeDict.value.find((item) => String(item.code) === String(value))?.value ?? value ?? '-'
 }
 function openAdd(parent?: MenuItem | Record<string, unknown>) {
-  editorMode.value = 'add'
-  Object.assign(form, {
-    id: '',
-    pid: parent?.id ?? 0,
-    application: parent?.application ?? apps.value[0]?.code ?? '',
-    name: '',
-    title: '',
-    router: '',
-    component: '',
-    iconBase: '',
-    sort: 100,
-    type: 1,
-  })
-  editorOpen.value = true
+  menuDialog.value?.add(parent as Record<string, any>)
 }
 function openEdit(row: MenuItem | Record<string, unknown>) {
-  editorMode.value = 'edit'
-  Object.assign(form, { ...row, title: row.title ?? row.name })
-  editorOpen.value = true
+  menuDialog.value?.edit(row as Record<string, any>)
 }
-async function submit() {
-  if (!String(form.name).trim() || !String(form.application).trim())
+async function submit(values: Record<string, any>, mode: 'add' | 'edit') {
+  if (!String(values.name).trim() || !String(values.application).trim())
     return toast.error('请填写菜单名称和所属应用')
-  editorLoading.value = true
   try {
     const response =
-      editorMode.value === 'add' ? await sysMenuAdd({ ...form }) : await sysMenuEdit({ ...form })
+      mode === 'add' ? await sysMenuAdd({ ...values }) : await sysMenuEdit({ ...values })
     if (!succeeded(response)) throw new Error(payload(response)?.message || '保存失败')
     toast.success('保存成功')
-    editorOpen.value = false
-    await loadData()
+    await tablePro.value?.loadData()
+    return true
   } catch (e: any) {
     toast.error(e?.message || '保存失败')
-  } finally {
-    editorLoading.value = false
+    return false
   }
 }
 async function remove(row: MenuItem | Record<string, unknown>) {
@@ -217,38 +191,34 @@ async function remove(row: MenuItem | Record<string, unknown>) {
     const response = await cancelableRequest(sysMenuDelete, { id: row.id })
     if (!succeeded(response)) throw new Error(payload(response)?.message || '删除失败')
     toast.success('删除成功')
-    await loadData()
+    await tablePro.value?.loadData()
   } catch (e: any) {
     if (e?.name !== 'AbortError') toast.error(e?.message || '删除失败')
   }
 }
 onMounted(async () => {
-  try {
-    const response: any = await getAppList({})
+  const [appResult, typeResult] = await Promise.allSettled([
+    getAppList({}),
+    sysDictTypeDropDown({ code: 'menu_type' }),
+  ])
+  if (appResult.status === 'fulfilled') {
+    const response: any = appResult.value
     const data = response?.data?.rows ?? response?.data?.list ?? response?.data
     apps.value = Array.isArray(data) ? data : []
-  } catch {
+  } else {
     apps.value = []
   }
-  try {
-    const response: any = await sysDictTypeDropDown({ code: 'menu_type' })
-    typeDict.value = response?.data ?? []
-  } catch {
+  if (typeResult.status === 'fulfilled') {
+    typeDict.value = (typeResult.value as any)?.data ?? []
+  } else {
     typeDict.value = []
   }
-  loadData()
 })
 </script>
 
 <template>
   <div class="system-page">
-    <PageComponent
-      :columns="columns"
-      :table-data="tableRows"
-      :pagination="pagination"
-      :loading="loading"
-      @bind-page="changePage"
-    >
+    <TablePro ref="tablePro" :columns="columns" :apis="{ get: getMenuTableData }">
       <template #condition
         ><div class="query-fields">
           <Select v-model="query.searchType">
@@ -345,28 +315,16 @@ onMounted(async () => {
             ></Popover
           >
         </div>
-        <span v-else>{{ value ?? '-' }}</span></template
-      > </PageComponent
-    ><Dialog v-model:open="editorOpen"
-      ><DialogContent class="menu-editor-dialog"
-        ><DialogHeader
-          ><DialogTitle>{{
-            editorMode === 'add' ? '新增菜单' : '编辑菜单'
-          }}</DialogTitle></DialogHeader
-        >
-        <div class="editor-form">
-          <label>菜单名称<Input v-model="form.name" placeholder="请输入菜单名称" /></label
-          ><label>所属应用<Input v-model="form.application" placeholder="请输入应用编码" /></label
-          ><label>路由地址<Input v-model="form.router" placeholder="请输入路由地址" /></label
-          ><label>组件路径<Input v-model="form.component" placeholder="请输入组件路径" /></label
-          ><label>排序<Input v-model="form.sort" type="number" /></label>
-        </div>
-        <DialogFooter
-          ><Button variant="outline" @click="editorOpen = false">取消</Button
-          ><Button :disabled="editorLoading" @click="submit">保存</Button></DialogFooter
-        ></DialogContent
-      ></Dialog
-    >
+        <span v-else>{{ value ?? '-' }}</span>
+      </template>
+    </TablePro>
+    <MenuFormDialog
+      ref="menuDialog"
+      :apps="apps"
+      :tree-rows="treeRows"
+      :type-dict="typeDict"
+      :on-submit="submit"
+    />
   </div>
 </template>
 

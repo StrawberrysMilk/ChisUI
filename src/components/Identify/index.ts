@@ -1,0 +1,94 @@
+import { onMounted, watch } from 'vue'
+import type { IdentifyProps } from './type'
+
+export const identifyDefaults = {
+  identifyCode: '1234',
+  fontSizeMin: 20,
+  fontSizeMax: 22,
+  backgroundColorMin: 180,
+  backgroundColorMax: 240,
+  colorMin: 50,
+  colorMax: 160,
+  lineColorMin: 40,
+  lineColorMax: 180,
+  dotColorMin: 0,
+  dotColorMax: 255,
+  contentWidth: 100,
+  contentHeight: 40,
+} satisfies Required<IdentifyProps>
+
+export function useIdentify(props: Readonly<Required<IdentifyProps>>) {
+  function randomNum(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min) + min)
+  }
+
+  function randomColor(min: number, max: number): string {
+    const r = randomNum(min, max)
+    const g = randomNum(min, max)
+    const b = randomNum(min, max)
+    return 'rgb(' + r + ',' + g + ',' + b + ')'
+  }
+
+  function drawPic() {
+    const canvas = document.getElementById('s-canvas') as HTMLCanvasElement
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    ctx.textBaseline = 'bottom'
+    // 绘制背景
+    ctx.fillStyle = randomColor(props.backgroundColorMin, props.backgroundColorMax)
+    ctx.fillRect(0, 0, props.contentWidth, props.contentHeight)
+    // 绘制文字
+    for (let i = 0; i < props.identifyCode.length; i++) {
+      drawText(ctx, props.identifyCode[i], i)
+    }
+    // drawLine(ctx)
+    drawDot(ctx)
+  }
+
+  function drawText(ctx: CanvasRenderingContext2D, txt: string, i: number) {
+    ctx.fillStyle = randomColor(props.colorMin, props.colorMax)
+    ctx.font = randomNum(props.fontSizeMin, props.fontSizeMax) + 'px SimHei'
+    const x = (i + 1) * (props.contentWidth / (props.identifyCode.length + 1))
+    const y = randomNum(props.fontSizeMax, props.contentHeight - 5)
+    var deg = randomNum(-45, 45)
+    // 修改坐标原点和旋转角度
+    ctx.translate(x, y)
+    ctx.rotate((deg * Math.PI) / 180)
+    ctx.fillText(txt, 0, 0)
+    // 恢复坐标原点和旋转角度
+    ctx.rotate((-deg * Math.PI) / 180)
+    ctx.translate(-x, -y)
+  }
+
+  function drawLine(ctx: CanvasRenderingContext2D) {
+    // 绘制干扰线
+    for (let i = 0; i < 8; i++) {
+      ctx.strokeStyle = randomColor(props.lineColorMin, props.lineColorMax)
+      ctx.beginPath()
+      ctx.moveTo(randomNum(0, props.contentWidth), randomNum(0, props.contentHeight))
+      ctx.lineTo(randomNum(0, props.contentWidth), randomNum(0, props.contentHeight))
+      ctx.stroke()
+    }
+  }
+
+  function drawDot(ctx: CanvasRenderingContext2D) {
+    // 绘制干扰点
+    for (let i = 0; i < 100; i++) {
+      ctx.fillStyle = randomColor(0, 255)
+      ctx.beginPath()
+      ctx.arc(
+        randomNum(0, props.contentWidth),
+        randomNum(0, props.contentHeight),
+        1,
+        0,
+        2 * Math.PI,
+      )
+      ctx.fill()
+    }
+  }
+
+  watch(() => props.identifyCode, drawPic)
+  onMounted(drawPic)
+  return { randomNum, randomColor, drawPic, drawText, drawLine, drawDot }
+}

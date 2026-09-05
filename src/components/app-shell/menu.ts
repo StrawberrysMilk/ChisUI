@@ -1,4 +1,4 @@
-import type { AppMenuNode, RawMenuItem } from './types'
+import type { AppMenuNode, RawMenuItem } from './type'
 
 const iconRules: Array<[RegExp, string]> = [
   [/档案|居民/, 'solar:folder-with-files-linear'],
@@ -15,8 +15,10 @@ const iconRules: Array<[RegExp, string]> = [
 
 export function resolveMenuIcon(icon: unknown, title: string, hasChildren = false) {
   if (typeof icon === 'string' && icon.includes(':')) return icon
-  return iconRules.find(([rule]) => rule.test(title))?.[1]
-    ?? (hasChildren ? 'solar:folder-linear' : 'solar:document-text-linear')
+  return (
+    iconRules.find(([rule]) => rule.test(title))?.[1] ??
+    (hasChildren ? 'solar:folder-linear' : 'solar:document-text-linear')
+  )
 }
 
 function isHidden(item: RawMenuItem) {

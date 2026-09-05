@@ -1,0 +1,24 @@
+.work-responsibility-editor {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  background: var(--background);
+}
+
+.work-responsibility-editor__toolbar {
+  border-bottom: 1px solid var(--border);
+}
+
+.work-responsibility-editor__content {
+  min-height: 180px;
+  overflow-y: auto;
+}
+
+.work-responsibility-editor__content :deep(.w-e-text-container) {
+  min-height: 180px;
+}
+
+.work-responsibility-editor[aria-disabled='true'] {
+  opacity: 0.65;
+}

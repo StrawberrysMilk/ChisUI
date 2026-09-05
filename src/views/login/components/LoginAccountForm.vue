@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { toast } from 'vue-sonner'
 import { Input } from '@/components/ui/input'
-import Identify from '@/components/Identify/identify.vue'
+import { Identify } from '@/components'
 import { useAuthStore } from '@/store/authStore'
 import { useUserInfoStore } from '@/store/global'
 

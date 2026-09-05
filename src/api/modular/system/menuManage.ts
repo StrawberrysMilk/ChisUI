@@ -36,3 +36,13 @@ export function sysMenuDelete(parameter: any) {
 export function sysMenuChangeStatus(parameter: any) {
   return axios({ url: '/BSMenu/ChangeStatus', method: 'post', data: parameter })
 }
+
+/** 获取菜单功能路由列表。 */
+export function getMenuRouteRoleList(parameter: { id: string | number }) {
+  return axios({ url: '/BSMenu/GetRuteRoleList', method: 'post', data: parameter })
+}
+
+/** 获取菜单管理工作职责。 */
+export function getMenuResponsibility(parameter: { id: string | number }) {
+  return axios({ url: '/BSMenu/GetMenuGZZZ', method: 'post', data: parameter })
+}

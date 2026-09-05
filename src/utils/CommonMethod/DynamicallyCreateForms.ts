@@ -1,8 +1,8 @@
-import { createApp, h, reactive, ref, type Component } from 'vue'
-import DynamicFormDialog from '@/components/DynamicForm/DynamicFormDialog.vue'
+import { createApp, h, ref, shallowReactive, type Component } from 'vue'
+import { DynamicFormDialog } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import type { DynamicFormField, DynamicFormModel } from '@/components/DynamicForm'
+import type { DynamicFormField, DynamicFormModel } from '@/components'
 
 type DialogProps = Record<string, any>
 type FormConfig = {
@@ -118,7 +118,10 @@ export function renderDialog(component: Component, props: DialogProps = {}, dial
 }
 
 export function renderDialogForm(config: FormConfig, props: DialogProps = {}, dialogProps: DialogProps = {}) {
-  const formProps = reactive(config)
+  // The schema contains component constructors and callback functions. A deep
+  // proxy here makes large third-party components such as vxe-table reactive
+  // and causes noticeable stalls whenever a field changes.
+  const formProps = shallowReactive(config)
   const schema = formProps.schema ?? formProps.formItems?.map((item: any) => normalizeField(item, formProps.rules ?? formProps.validators ?? {})) ?? []
   const open = ref(true)
   const mountPoint = document.createElement('div')
@@ -143,7 +146,14 @@ export function renderDialogForm(config: FormConfig, props: DialogProps = {}, di
     },
   })
   app.mount(mountPoint)
-  const dispose = () => { app.unmount(); mountPoint.remove() }
+  let resolveClosed!: () => void
+  const closed = new Promise<void>((resolve) => { resolveClosed = resolve })
+  const dispose = () => {
+    app.unmount()
+    mountPoint.remove()
+    // Resolve only after the dialog's teleported content and overlay are removed.
+    resolveClosed()
+  }
   const stop = window.setInterval(() => { if (!open.value) { window.clearInterval(stop); window.setTimeout(dispose, 200) } }, 100)
-  return { close: () => { open.value = false } }
+  return { close: () => { open.value = false; return closed } }
 }

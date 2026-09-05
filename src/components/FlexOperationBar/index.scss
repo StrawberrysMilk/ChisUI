@@ -1,0 +1,43 @@
+.FlexOperation {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 16px;
+  overflow: hidden;
+  background: hsl(var(--background));
+}
+
+.FlexOperation__condition {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.FlexOperation__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  white-space: nowrap;
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+}
+
+.FlexOperation--stacked {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.FlexOperation--stacked .FlexOperation__condition {
+  flex-basis: 100%;
+}
+
+.FlexOperation--stacked .FlexOperation__actions {
+  position: static;
+  width: 100%;
+  justify-content: flex-end;
+  transform: none;
+}

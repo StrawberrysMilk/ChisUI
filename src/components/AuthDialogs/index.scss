@@ -1,0 +1,28 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 500;
+}
+.password-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.password-rules p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.password-rules p[data-valid='true'] {
+  color: var(--foreground);
+}

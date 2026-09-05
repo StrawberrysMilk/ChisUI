@@ -7,7 +7,7 @@
 以下情况必须遵守本规则：
 
 - 页面导入或渲染 `PageComponent`。
-- 修改 `PageComponent.vue`、`PageComponentTable.vue`、`PageComponentPagination.vue`。
+- 修改 `PageComponent/`、`PageComponentTable/`、`PageComponentPagination/` 下的组件文件。
 - 将旧项目的列表、查询、分页或操作列迁移到当前项目。
 
 ## 2. 页面层级与背景

@@ -1,0 +1,85 @@
+.sso-panel__header {
+  display: flex;
+  height: 46px;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sso-panel__title {
+  font-size: 14px;
+  font-weight: 500;
+}
+.sso-panel__loading {
+  display: grid;
+  min-height: 82px;
+  place-items: center;
+  color: var(--muted-foreground);
+}
+.sso-panel__list {
+  display: flex;
+  max-height: 330px;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.sso-panel__item {
+  display: flex;
+  width: 100%;
+  min-height: 82px;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: var(--foreground);
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.sso-panel__item:hover {
+  background: var(--accent);
+}
+.sso-panel__item:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.sso-panel__avatar {
+  width: 34px;
+  height: 34px;
+}
+.sso-panel__name {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sso-panel__action {
+  display: none;
+  flex: 0 0 auto;
+  color: var(--primary);
+  font-size: 14px;
+}
+.sso-panel__item:hover .sso-panel__action {
+  display: inline;
+}
+.sso-panel__spinning {
+  width: 16px;
+  height: 16px;
+  animation: sso-spin 800ms linear infinite;
+}
+.sso-panel__empty {
+  display: flex;
+  min-height: 82px;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.sso-panel__empty svg {
+  display: none;
+}
+@keyframes sso-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,16 @@
+.page-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border-top: 8px solid var(--muted);
+  background: var(--background);
+}
+
+.page-pagination__total,
+.page-pagination__current {
+  color: hsl(var(--muted-foreground));
+  font-size: 13px;
+}

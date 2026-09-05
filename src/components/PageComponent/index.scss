@@ -1,0 +1,74 @@
+.page-component {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  /* Keep the complete page surface white, including the flexible area below the table. */
+  background: var(--background);
+}
+
+.page-component__fixed {
+  flex: 0 0 auto;
+}
+
+.page-component__body {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.page-component__sidebar {
+  display: flex;
+  min-height: 0;
+  flex: 0 0 auto;
+  overflow: auto;
+  border-right: 1px solid hsl(var(--border));
+  background: var(--background);
+}
+
+.page-component__main {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.page-component__top,
+.page-component__query,
+.page-component__advanced {
+  border-bottom: 1px solid hsl(var(--border));
+  background: var(--background);
+}
+
+.page-component__query {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 12px 16px;
+}
+
+.page-component__condition {
+  min-width: 0;
+  flex: 1;
+}
+
+.page-component__actions {
+  flex: 0 0 auto;
+}
+
+.page-component__content {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+}
+
+.page-component__table-wrap {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}

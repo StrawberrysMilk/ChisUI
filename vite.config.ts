@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port: 81,
+      port: 82,
       // 配置开发服务器支持SPA路由
       historyApiFallback: true,
       proxy: {
