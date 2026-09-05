@@ -1,0 +1,127 @@
+.notice-panel__tabs {
+  gap: 0;
+}
+.notice-panel__bar {
+  display: flex;
+  height: 56px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.notice-panel__tab-list {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+.notice-panel__tab-list :deep([data-slot='tabs-trigger']) {
+  position: relative;
+  height: 100%;
+  flex: 1;
+  padding-inline: 14px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.notice-panel__tab-list :deep([data-slot='tabs-trigger'][data-state='active']) {
+  color: var(--primary);
+  background: transparent;
+  box-shadow: inset 0 -2px 0 var(--primary);
+}
+.notice-panel__count {
+  display: grid;
+  min-width: 16px;
+  height: 16px;
+  place-items: center;
+  padding-inline: 4px;
+  color: white;
+  font-size: 9px;
+  background: var(--destructive);
+  border-radius: 999px;
+}
+.notice-panel__content {
+  position: relative;
+  height: min(500px, calc(100vh - 124px));
+  min-height: min(500px, calc(100vh - 124px));
+  margin: 0;
+  overflow-y: auto;
+}
+.notice-panel__loading {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  color: var(--muted-foreground);
+}
+.notice-panel__list {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.notice-panel__item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--radius-md);
+}
+.notice-panel__item:hover {
+  background: var(--accent);
+}
+.notice-panel__item-icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  color: var(--primary);
+  background: color-mix(in oklab, var(--primary) 10%, var(--background));
+  border-radius: var(--radius-md);
+}
+.notice-panel__item-icon svg {
+  width: 17px;
+  height: 17px;
+}
+.notice-panel__item-copy {
+  min-width: 0;
+  flex: 1;
+}
+.notice-panel__item-copy p {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.notice-panel__item-copy time {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+.notice-panel__empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.notice-panel__empty svg {
+  width: 46px;
+  height: 46px;
+  opacity: 0.35;
+}
+.notice-panel__spinning {
+  width: 22px;
+  height: 22px;
+  animation: notice-spin 800ms linear infinite;
+}
+@keyframes notice-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

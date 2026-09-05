@@ -1,5 +1,11 @@
-export { default as PageComponent } from './PageComponent.vue'
-export { default as PageComponentTable } from './PageComponentTable.vue'
-export { default as PageComponentPagination } from './PageComponentPagination.vue'
-export { usePageLayout } from './usePageLayout'
-export type { PagePagination, PageTableColumn, PageTableRowEvent } from './types'
+import type { PageComponentResolvedProps } from './type'
+import { computed } from 'vue'
+import { usePageLayout } from './usePageLayout'
+
+export function usePageComponent(props: PageComponentResolvedProps) {
+  const hasTable = computed(() => props.columns.length > 0)
+
+  usePageLayout()
+
+  return { hasTable }
+}

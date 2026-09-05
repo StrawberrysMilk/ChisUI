@@ -1,0 +1,115 @@
+.workspace-tabs {
+  display: flex;
+  height: 76px;
+  align-items: center;
+  gap: 0;
+  padding: 16px;
+  background: #f3f4f6;
+}
+.workspace-tabs__home {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+.workspace-tabs__scroll {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 0 4px;
+  scrollbar-width: none;
+}
+.workspace-tabs__scroll::-webkit-scrollbar {
+  display: none;
+}
+.workspace-tabs__tab {
+  display: inline-flex;
+  min-width: 96px;
+  max-width: 220px;
+  height: 38px;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 6px 0 12px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  background: var(--background);
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+.workspace-tabs__tab:hover {
+  color: var(--foreground);
+  background: var(--background);
+}
+.workspace-tabs__tab--active {
+  color: white;
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 8%);
+}
+.workspace-tabs__main {
+  display: flex;
+  min-width: 0;
+  height: 100%;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.workspace-tabs__main > svg {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+.workspace-tabs__label {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.workspace-tabs__close {
+  flex: 0 0 auto;
+}
+.workspace-tabs__close:hover {
+  color: inherit;
+  background: rgb(255 255 255 / 16%);
+}
+.workspace-tabs__close svg {
+  width: 14px;
+  height: 14px;
+}
+.workspace-tabs__arrow {
+  flex: 0 0 auto;
+  color: var(--muted-foreground);
+}
+.workspace-tabs__arrow:hover {
+  color: var(--foreground);
+  background: var(--background);
+}
+:global(.workspace-tabs__context-menu) {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgb(15 23 42 / 14%);
+}
+:global(.workspace-tabs__context-menu [data-slot='context-menu-item']) {
+  min-height: 30px;
+  padding: 5px 10px;
+  color: #374151;
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 4px;
+}
+:global(.workspace-tabs__context-menu [data-slot='context-menu-item']:focus) {
+  color: #1d4ed8;
+  background: #eaf3ff;
+}
+:global(.workspace-tabs__context-menu [data-slot='context-menu-item'][data-disabled]) {
+  color: #9ca3af;
+  opacity: 1;
+}

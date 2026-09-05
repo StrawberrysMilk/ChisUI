@@ -28,7 +28,7 @@ declare module '../*.vue' {
 
 declare module 'vue' {
   export interface GlobalComponents {
-    Identify: typeof import('@/components/Identify/identify.vue')['default'];
+    Identify: typeof import('@/components/Identify/index.vue')['default'];
   }
 }
 

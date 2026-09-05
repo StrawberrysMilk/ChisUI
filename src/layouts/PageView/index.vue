@@ -1,7 +1,8 @@
 <script lang="ts">
 import { defineComponent, computed, ref, onMounted, onUpdated, h, useSlots, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import PageHeader from '@/components/PageHeader'
+import { PageHeader } from '@/components'
+import type { PageViewContent } from './type'
 
 export default defineComponent({
   name: 'PageView',
@@ -27,7 +28,7 @@ export default defineComponent({
     const route = useRoute()
     // const appStore = useAppStore() // 使用Pinia的app store
     const appStore = reactive({multiTab: true}) // 使用Pinia的app store
-    const contentRef = ref<InstanceType<typeof PageHeader> | null>(null)
+    const contentRef = ref<PageViewContent | null>(null)
     const slotsData = useSlots()
 
     // 响应式数据
@@ -48,7 +49,7 @@ export default defineComponent({
 
       if (contentRef.value) {
         const content = contentRef.value
-        if ('pageMeta' in content) {
+        if (content.pageMeta) {
           // 处理pageMeta逻辑
           const meta = content.pageMeta
           pageTitle.value = meta.title || null

@@ -1,0 +1,78 @@
+.user-trigger {
+  height: 42px;
+  max-width: 240px;
+  padding-inline: 8px;
+  color: white;
+  font-size: 14px;
+}
+.user-trigger:hover {
+  color: white;
+  background: rgb(255 255 255 / 14%);
+}
+.user-avatar {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+.user-avatar__fallback {
+  color: var(--primary);
+  background: white;
+}
+.user-avatar__fallback svg {
+  width: 18px;
+  height: 18px;
+}
+.user-name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.user-menu-item {
+  min-height: 32px;
+  gap: 10px;
+  padding-inline: 12px;
+  font-size: 14px;
+}
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--muted);
+  border-radius: var(--radius-md);
+}
+.contact-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  color: var(--primary);
+  background: var(--background);
+  border-radius: var(--radius-md);
+}
+.contact-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.contact-label,
+.contact-value {
+  display: block;
+}
+.contact-label {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.contact-value {
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+@media (max-width: 640px) {
+  .user-trigger {
+    max-width: 46px;
+  }
+  .user-name {
+    display: none;
+  }
+}

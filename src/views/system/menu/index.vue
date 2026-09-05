@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, shallowRef } from 'vue'
 import { Icon } from '@iconify/vue'
-import PageComponent from '@/components/PageComponent/PageComponent.vue'
+import { PageComponent } from '@/components'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,

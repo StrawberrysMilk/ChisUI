@@ -1,0 +1,43 @@
+.page-table {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  overflow: auto;
+  background: var(--background);
+}
+
+.page-table__table {
+  min-width: 100%;
+  height: 100%;
+}
+
+.page-table__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted-foreground);
+  background: rgb(255 255 255 / 72%);
+}
+.page-table__spinner {
+  width: 28px;
+  height: 28px;
+  color: var(--primary);
+}
+
+.page-table :deep(.vxe-body--row) {
+  cursor: pointer;
+}
+
+.page-table :deep(.vxe-body--row .vxe-body--column) {
+  height: 38px;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.page-table :deep(.vxe-body--row.page-table__row--current .vxe-body--column) {
+  background-color: #d9f99d !important;
+}

@@ -22,7 +22,7 @@ declare module '../*.vue' {
   export default component;
 }
 
-declare module '@/components/Identify/identify.vue' {
+declare module '@/components/Identify/index.vue' {
   import type { DefineComponent } from 'vue';
 
   interface IdentifyProps {

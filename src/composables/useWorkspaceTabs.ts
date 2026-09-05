@@ -1,6 +1,6 @@
 import { computed, shallowRef, watch } from 'vue'
 import type { Router } from 'vue-router'
-import type { WorkspaceTab } from '@/components/app-shell/types'
+import type { WorkspaceTab } from '@/components'
 
 interface UseWorkspaceTabsOptions {
   router: Router

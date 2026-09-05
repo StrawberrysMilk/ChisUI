@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed, onMounted, reactive, ref, shallowRef, watch} from 'vue'
 import {Icon} from '@iconify/vue'
-import PageComponent from '@/components/PageComponent/PageComponent.vue'
+import { PageComponent } from '@/components'
 import {Button} from '@/components/ui/button'
 import {Input} from '@/components/ui/input'
 import {Popover, PopoverClose, PopoverContent, PopoverTrigger} from '@/components/ui/popover'

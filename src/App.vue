@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { Toaster } from 'vue-sonner';
-import AuthDialogs from '@/components/auth/AuthDialogs.vue';
+import { AuthDialogs } from '@/components';
 </script>
 <style>
 #app {

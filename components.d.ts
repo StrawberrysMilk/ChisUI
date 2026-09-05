@@ -8,14 +8,12 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    FlexOperationBar: typeof import('./src/components/FlexOperationBar/FlexOperationBar.vue')['default']
+    FlexOperationBar: typeof import('./src/components/FlexOperationBar/index.vue')['default']
     FormBuilder: typeof import('./src/components/formBuilder/index.vue')['default']
-    HeaderCompt: typeof import('./src/components/HeaderCompt.vue')['default']
-    Identify: typeof import('./src/components/Identify/identify.vue')['default']
-    LayoutHeader: typeof import('./src/components/layoutHeader/layoutHeader.vue')['default']
-    LayoutIndex: typeof import('./src/components/LayoutIndex.vue')['default']
-    MultiTab: typeof import('./src/components/MultiTab/MultiTab.vue')['default']
-    PageHeader: typeof import('./src/components/PageHeader/PageHeader.vue')['default']
+    HeaderCompt: typeof import('./src/components/HeaderCompt/index.vue')['default']
+    Identify: typeof import('./src/components/Identify/index.vue')['default']
+    LayoutIndex: typeof import('./src/components/LayoutIndex/index.vue')['default']
+    PageHeader: typeof import('./src/components/PageHeader/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

@@ -1,8 +1,8 @@
 import { createApp, h, reactive, ref, type Component } from 'vue'
-import DynamicFormDialog from '@/components/DynamicForm/DynamicFormDialog.vue'
+import { DynamicFormDialog } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import type { DynamicFormField, DynamicFormModel } from '@/components/DynamicForm'
+import type { DynamicFormField, DynamicFormModel } from '@/components'
 
 type DialogProps = Record<string, any>
 type FormConfig = {
